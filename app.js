@@ -90,6 +90,9 @@
     // A locally thresholded copy can make blue-pen strokes stand out from a
     // shadowed page. Otsu's threshold is computed from the enhanced luminance.
     const enhancedPixels=context.getImageData(0,0,canvas.width,canvas.height);
+    // Keep the grayscale data intact for adaptive thresholding below. The
+    // global-threshold candidate is binary and must not become its input.
+    const grayscalePixels=enhancedPixels.data.slice();
     const hist=new Uint32Array(256); let sum=0;
     for(let i=0;i<enhancedPixels.data.length;i+=4){const y=enhancedPixels.data[i];hist[y]++;sum+=y;}
     const count=canvas.width*canvas.height; let bgSum=0,bgCount=0,bestVariance=-1,threshold=160;
@@ -115,7 +118,7 @@
     for(let y=1;y<=height;y++){
       let rowSum=0; const pixelRow=(y-1)*width, integralRow=y*stride, above=(y-1)*stride;
       for(let x=1;x<=width;x++){
-        rowSum+=enhancedPixels.data[(pixelRow+x-1)*4];
+        rowSum+=grayscalePixels[(pixelRow+x-1)*4];
         integral[integralRow+x]=integral[above+x]+rowSum;
       }
     }
@@ -126,7 +129,7 @@
         const x0=Math.max(0,x-radius),x1=Math.min(width,x+radius+1);
         const area=(x1-x0)*(y1-y0);
         const localMean=(integral[bottom+x1]-integral[top+x1]-integral[bottom+x0]+integral[top+x0])/area;
-        const source=enhancedPixels.data[(y*width+x)*4];
+        const source=grayscalePixels[(y*width+x)*4];
         const value=source<localMean-offset?0:255,index=(y*width+x)*4;
         adaptivePixels.data[index]=adaptivePixels.data[index+1]=adaptivePixels.data[index+2]=value;
         adaptivePixels.data[index+3]=255;
