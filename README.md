@@ -1,18 +1,18 @@
-# yashoeditor
+# YashoEditor
 
-A static, browser-based photo/PDF OCR page that creates a Word document. Files are processed in the browser; Tesseract.js and PDF.js are loaded from public CDNs.
+YashoEditor reads text from photos or PDFs and exports an editable Word document. The published page is https://expert-gyasho.github.io/yashoeditor/.
 
 ## Use
 
-Open `index.html` in a modern browser with an internet connection. Add one or more JPG, PNG, or PDF files, or take a photo using the camera button. Before OCR, the page now upscales small scans and compares the original with a grayscale, contrast-adjusted copy. It uses automatic page layout detection for mixed or full-page text. Review and correct the OCR result before downloading the `.docx` file. The OCR supports printed Hindi and English; English text is left as English. Handwriting and blurry, angled, or very small text can still be misread.
+Open the page in a modern browser with an internet connection. Choose or photograph one or more JPG, PNG, or PDF files. The visible file order is the Word order; use the up/down arrows to rearrange files. All selected pages are read in sequence and combined into one `.docx` download.
 
-The DOCX assigns Hindi text to the legacy **Kruti Dev 010** font and English text to Arial. A computer needs Kruti Dev 010 installed to display that legacy encoding as Hindi. OCR can misread text, and complex Hindi conjuncts may need correction after conversion, so review the Word file before using it.
+Before OCR, the browser enlarges the image and creates contrast-adjusted, global-threshold, and shadow-corrected versions. It compares OCR results and keeps the strongest result. Files are processed in the browser and are not sent to an OCR service. OCR libraries and language models load from public CDNs.
 
-## Publish with GitHub Pages
+The OCR handles printed Hindi and English more reliably than handwriting. Handwritten Devanagari can still be misread and may need manual correction in the editable text box. English text remains English.
 
-1. Create a new public repository named `yashoeditor` in your GitHub account.
-2. Upload the contents of this folder to the repository root.
-3. In the repository settings, enable Pages with **GitHub Actions** as the source. The included workflow publishes every push to `main`.
+The Word file uses **Kruti Dev 010** for Hindi and Arial for English. Kruti Dev 010 must be installed on the computer to display the legacy Hindi encoding correctly.
 
-After the first successful workflow run, the page will be available at `https://YOUR-USERNAME.github.io/yashoeditor/`.
+## GitHub Pages
+
+The source repository is https://github.com/expert-gyasho/yashoeditor. GitHub Actions deploys updates pushed to `main`.
 
