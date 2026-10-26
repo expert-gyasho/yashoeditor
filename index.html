@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="description" content="YashoEditor — फोटो से टेक्स्ट पढ़ें और Word दस्तावेज़ बनाएँ।">
+  <title>yashoeditor</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="#"><span class="brand-mark">य</span><span>yashoeditor</span></a><span class="private-note"><i></i> फाइलें आपके डिवाइस पर प्रोसेस होती हैं</span></header>
+  <main>
+    <section class="intro"><div class="eyebrow">PHOTO TO WORD · हिंदी + English</div><h1>तस्वीर से शब्द,<br><em>सीधे Word में।</em></h1><p>फोटो लें या फाइल चुनें। हिंदी और English टेक्स्ट पहचानें, फिर अपनी Word फाइल डाउनलोड करें। पहचान आपके ब्राउज़र में होती है।</p></section>
+    <section class="workspace">
+      <div class="left-panel">
+        <div class="panel-heading"><div><span class="step">01</span><h2>फोटो या फाइल जोड़ें</h2></div><span class="format-hint">JPG · PNG · PDF · क्रम बदलें ↑↓</span></div>
+        <div class="dropzone" id="dropzone"><div class="upload-icon"><svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg></div><strong>फाइल यहाँ छोड़ें</strong><span>या नीचे से चुनें — एक साथ कई फाइलें</span><label class="button button-dark" for="fileInput">डिवाइस से चुनें</label><input id="fileInput" type="file" accept="image/*,.pdf,application/pdf" multiple hidden><input id="cameraInput" type="file" accept="image/*" capture="environment" multiple hidden></div>
+        <button class="button button-camera" id="cameraBtn"><svg viewBox="0 0 24 24"><path d="M4 7h3l2-2h6l2 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.5"/></svg> कैमरे से फोटो लें</button>
+        <div class="file-list" id="fileList"></div>
+        <button class="button button-accent" id="readBtn" disabled><span>तस्वीरों से टेक्स्ट पढ़ें</span><svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+        <div class="progress-wrap" id="progressWrap" hidden><div class="progress-label"><span id="progressText">तैयारी हो रही है…</span><span id="progressPct">0%</span></div><div class="progress-track"><div id="progressBar"></div></div></div>
+        <p class="small-note"><strong>पहले फोटो साफ़, फिर OCR:</strong> पढ़ने से पहले तस्वीर को बड़ा करके contrast और रोशनी सुधारी जाती है। हस्तलिखित हिंदी में फिर भी गलती हो सकती है—पढ़ने के बाद टेक्स्ट जाँचें। फोटो किसी OCR सेवा को नहीं भेजी जाती।</p>
+      </div>
+      <div class="right-panel">
+        <div class="panel-heading"><div><span class="step">02</span><h2>पहचाना गया टेक्स्ट</h2></div><span class="editable-tag">संपादन योग्य</span></div>
+        <div class="text-area-wrap"><textarea id="resultText" placeholder="आपका पहचाना हुआ टेक्स्ट यहाँ आएगा…\n\nपहचान के बाद आप इसे जाँच और सुधार सकते हैं।" spellcheck="false"></textarea><div class="empty-overlay" id="emptyOverlay"><div class="document-illustration"><div></div><div></div><div></div><div></div></div><span>टेक्स्ट अभी तैयार नहीं है</span><small>पहले फोटो या फाइल जोड़ें</small></div></div>
+        <div class="output-options"><div><div class="option-title">हिंदी फ़ॉन्ट</div><div class="font-choice"><span class="font-dot"></span> KrutiDev 010 <span class="font-label">Word में</span></div></div><div class="english-note"><span>En</span> English अपनी भाषा में रहेगा</div></div>
+        <button class="button button-download" id="downloadBtn" disabled><svg viewBox="0 0 24 24"><path d="M12 4v11m0 0 4-4m-4 4-4-4m-4 7v1h16v-1"/></svg><span>Word फाइल डाउनलोड करें</span></button>
+        <p class="export-hint">.docx · KrutiDev 010 के लिए फ़ॉन्ट इंस्टॉल होना चाहिए · English जस का तस</p>
+      </div>
+    </section>
+    <section class="steps"><div><span>1</span><p><b>फोटो जोड़ें</b><br>कैमरा या डिवाइस से</p></div><div><span>2</span><p><b>टेक्स्ट पहचानें</b><br>Hindi + English OCR</p></div><div><span>3</span><p><b>Word डाउनलोड करें</b><br>KrutiDev हिंदी फ़ॉन्ट</p></div></section>
+    <footer>yashoeditor <span>·</span> तस्वीर की पहचान में गलती हो सकती है — डाउनलोड से पहले टेक्स्ट जाँचें।</footer>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
+
